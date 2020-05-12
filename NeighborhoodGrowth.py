@@ -70,7 +70,6 @@ class Dynamics:
                 # print(self.bounding_box[j][i])
                 updated_bounding_box[j][i] = self.bounding_box[j][i] or not self.turn_on(i,j)
                 # updated_bounding_box[j][i] = self.bounding_box[j][i] or self.turn_on(i,j) 
-
         self.bounding_box = updated_bounding_box
 
 
@@ -80,15 +79,27 @@ def threshold_set(n):
         threshold_diagram.append(n + 1 - i)
     return threshold_diagram
 
-zeroset = threshold_set(4)
-# zeroset = [4,3,2,1]
-# print (Dynamics(zeroset, [(2,5), (-3,1), (8, 5), (4,7)]).site_configuration)
-test = Dynamics(zeroset, [(0,4),(0,3),(1,2),(2,1),(3,0),(4,0)])
-print(test.young_diagram)
+def sumadd(n):
+    sum = (n*(n+1))/2
+    return sum
+
+def thin_set(n):
+    thinset = []
+    for i in range(n):
+        for j in range(n + sumadd(n-i-1), n + sumadd(n-i-1) + (n-i)):
+            thinset.append((i,j))
+            thinset.append((j,i))
+    return thinset
+
+
+zeroset = threshold_set(8)
+thinset = thin_set(4)
+test = Dynamics(zeroset, thinset)
 print(test.bounding_box)
-for i in range(0,6):   
+for i in range(0,9):   
     test.transform()
     print(test.bounding_box)
+
 
 
 
